@@ -25,6 +25,30 @@ class FileController extends AbstractZeitfadenController
   }
 
 
+  public function existsAction()
+  {
+    $applicationId = $this->_request->getParam('applicationId','');
+    $fileId = $this->_request->getParam('fileId','');
+
+
+    $this->_response->appendValue('fileId',$fileId);
+    $this->_response->appendValue('applicationId',$applicationId);
+
+
+    try
+    {
+      $gridFile = $this->getFileService()->getGridFile($fileId, $applicationId);
+      $this->_response->appendValue('exists',true);
+      
+    }
+    catch (\Exception $e)
+    {
+      $this->_response->appendValue('exists',false);
+    }
+  }        
+
+
+
   public function streamAction()
   {
     $applicationId = $this->_request->getParam('applicationId','');
