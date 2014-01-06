@@ -153,6 +153,22 @@ class FileService
     
     return $fileDocument;
   }     
+
+
+  public function deleteGridFile($fileId, $applicationId)
+  {
+    $name = 'file_storage_'.$applicationId;
+    $this->mongoDb = $this->mongoConnection->$name;
+
+    $gridFS = $this->mongoDb->getGridFS();
+    $status = $gridFS->remove(array('metadata.file_id' => $fileId, 'metadata.application_id' => $applicationId));
+    
+    if (!$status)
+    {
+      throw new \Exception('delete failed'); 
+    }
+    
+  }     
   
   
 }

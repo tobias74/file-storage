@@ -25,6 +25,32 @@ class FileController extends AbstractZeitfadenController
   }
 
 
+
+  public function deleteAction()
+  {
+    $applicationId = $this->_request->getParam('applicationId','');
+    $fileId = $this->_request->getParam('fileId','');
+
+
+    $this->_response->appendValue('fileId',$fileId);
+    $this->_response->appendValue('applicationId',$applicationId);
+
+
+    try
+    {
+      $gridFile = $this->getFileService()->deleteGridFile($fileId, $applicationId);
+      $this->_response->appendValue('deleted',true);
+      
+    }
+    catch (\Exception $e)
+    {
+      error_log('tried to delete a file wihich was not there.');
+      $this->_response->appendValue('deleted',false);
+    }
+  }        
+
+
+
   public function existsAction()
   {
     $applicationId = $this->_request->getParam('applicationId','');
